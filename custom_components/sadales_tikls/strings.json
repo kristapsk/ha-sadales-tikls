@@ -1,0 +1,24 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Sadales tikls",
+        "description": "Enter your Sadales tikls API details.",
+        "data": {
+          "api_key": "API key",
+          "oeic": "oEIC",
+          "mp_nr": "mpNr",
+          "m_nr": "mNr"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Invalid authentication",
+      "cannot_connect": "Cannot connect",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This meter is already configured"
+    }
+  }
+}
