@@ -4,8 +4,8 @@
   "codeowners": ["@kristapsk"],
   "config_flow": true,
   "documentation": "https://github.com/kristapsk/ha-sadales-tikls",
-  "issue_tracker": "https://github.com/kristapsk/ha-sadales-tikls/issues",
   "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/kristapsk/ha-sadales-tikls/issues",
   "loggers": ["custom_components.sadales_tikls"],
   "requirements": [],
   "version": "0.1.2"
