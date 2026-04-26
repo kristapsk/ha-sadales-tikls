@@ -6,9 +6,9 @@
         "description": "Enter your Sadales tikls API details.",
         "data": {
           "api_key": "API key",
-          "oeic": "oEIC",
-          "mp_nr": "mpNr",
-          "m_nr": "mNr"
+          "oeic": "Object's EIC",
+          "mp_nr": "Measurement point",
+          "m_nr": "Meter number"
         }
       }
     },

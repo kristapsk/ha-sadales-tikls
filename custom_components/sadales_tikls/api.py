@@ -7,10 +7,12 @@ from typing import Any
 import aiohttp
 from homeassistant.util import dt as dt_util
 
-PRIMARY_URL = "https://services.e-st.lv/m2m/services/getobject-consumption"
-FALLBACK_URLS = [
+URLS = [
+    "https://services.e-st.lv/m2m/services/get-object-consumption",
     "https://services.e-st.lv/m2m/services/get-objectconsumption",
+    "https://services.e-st.lv/m2m/services/getobject-consumption",
     "https://services.e-st.lv/m2m/get-object-consumption",
+    "https://services.e-st.lv/m2m/get-objectconsumption",
 ]
 
 
@@ -20,6 +22,10 @@ class SadalesTiklsApiError(Exception):
 
 class SadalesTiklsApiAuthError(SadalesTiklsApiError):
     pass
+
+
+def _clean(value: str) -> str:
+    return value.strip().replace("\u00a0", "").replace("\u200b", "").replace("\ufeff", "")
 
 
 @dataclass
@@ -34,45 +40,59 @@ class SadalesTiklsApiClient:
         now = dt_util.now()
         yesterday = now - timedelta(days=1)
 
+        api_key = _clean(self.api_key)
+        oeic = _clean(self.oeic)
+        mp_nr = _clean(self.mp_nr)
+        m_nr = _clean(self.m_nr)
+
         params = {
-            "oEIC": self.oeic,
-            "mpNr": self.mp_nr,
-            "mNr": self.m_nr,
+            "oEIC": oeic,
+            "mpNr": mp_nr,
+            "mNr": m_nr,
             "dF": yesterday.strftime("%Y-%m-%dT01:00:00"),
             "dT": now.strftime("%Y-%m-%dT00:00:00"),
         }
+
         headers = {
-            "Authorization": f"Bearer {self.api_key}",
+            "Authorization": f"Bearer {api_key}",
             "Accept": "application/json",
         }
 
-        errors: list[str] = []
-        for url in [PRIMARY_URL, *FALLBACK_URLS]:
+        auth_errors: list[str] = []
+        other_errors: list[str] = []
+
+        for url in URLS:
             try:
                 async with self.session.get(url, params=params, headers=headers, timeout=60) as resp:
                     text = await resp.text()
+
                     if resp.status in (401, 403):
-                        raise SadalesTiklsApiAuthError("Invalid API key or access denied")
-                    if resp.status >= 400:
-                        errors.append(f"{url} -> HTTP {resp.status}: {text[:200]}")
+                        auth_errors.append(f"{url} -> HTTP {resp.status}: {text[:500]}")
                         continue
+
+                    if resp.status >= 400:
+                        other_errors.append(f"{url} -> HTTP {resp.status}: {text[:500]}")
+                        continue
+
                     payload = await resp.json(content_type=None)
                     return self._normalize_payload(payload, url)
-            except SadalesTiklsApiAuthError:
-                raise
-            except aiohttp.ClientError as err:
-                errors.append(f"{url} -> {err}")
 
-        raise SadalesTiklsApiError("; ".join(errors) if errors else "Unknown API error")
+            except aiohttp.ClientError as err:
+                other_errors.append(f"{url} -> {type(err).__name__}: {err}")
+
+        if auth_errors and not other_errors:
+            raise SadalesTiklsApiAuthError("; ".join(auth_errors))
+
+        raise SadalesTiklsApiError("; ".join(auth_errors + other_errors) or "Unknown API error")
 
     def _normalize_payload(self, payload: Any, source_url: str) -> dict[str, Any]:
         if not isinstance(payload, list) or not payload:
-            raise SadalesTiklsApiError("Unexpected payload: expected non-empty list")
+            raise SadalesTiklsApiError(f"Unexpected payload from {source_url}: expected non-empty list")
 
         obj = payload[0]
         meters = obj.get("mList") or []
         if not meters:
-            raise SadalesTiklsApiError("Unexpected payload: missing mList")
+            raise SadalesTiklsApiError(f"Unexpected payload from {source_url}: missing mList")
 
         meter = meters[0]
         rows = meter.get("cList") or []

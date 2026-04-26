@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import timedelta
 import logging
 
-from homeassistant.config_entries import ConfigEntry
+from homeassistant.config_entries import ConfigEntry, ConfigEntryAuthFailed
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
@@ -35,7 +35,7 @@ class SadalesTiklsCoordinator(DataUpdateCoordinator[dict]):
         try:
             return await self.api.async_fetch_yesterday_consumption()
         except SadalesTiklsApiAuthError as err:
-            raise UpdateFailed(f"Authentication failed: {err}") from err
+            raise ConfigEntryAuthFailed(f"Authentication failed: {err}") from err
         except SadalesTiklsApiError as err:
             raise UpdateFailed(str(err)) from err
 

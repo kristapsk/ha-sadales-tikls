@@ -1,11 +1,11 @@
 {
   "domain": "sadales_tikls",
   "name": "Sadales tikls",
-  "codeowners": ["@kristaps-kaupe"],
+  "codeowners": ["@kristapsk"],
   "config_flow": true,
-  "documentation": "https://github.com/kristapskaupe/ha-sadales-tikls",
+  "documentation": "https://github.com/kristapsk/ha-sadales-tikls",
   "iot_class": "cloud_polling",
   "loggers": ["custom_components.sadales_tikls"],
   "requirements": [],
-  "version": "0.1.0"
+  "version": "0.1.1"
 }
