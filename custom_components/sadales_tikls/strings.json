@@ -6,9 +6,9 @@
         "description": "Enter your Sadales tikls API details.",
         "data": {
           "api_key": "API key",
-          "oeic": "Object's EIC",
-          "mp_nr": "Measurement point",
-          "m_nr": "Meter number"
+          "oeic": "Object EIC (oEIC)",
+          "mp_nr": "Metering point number (mpNr)",
+          "m_nr": "Meter number (mNr)"
         }
       }
     },
@@ -19,6 +19,35 @@
     },
     "abort": {
       "already_configured": "This meter is already configured"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "total": {"name": "Yesterday total"},
+      "h01": {"name": "Hour 01"},
+      "h02": {"name": "Hour 02"},
+      "h03": {"name": "Hour 03"},
+      "h04": {"name": "Hour 04"},
+      "h05": {"name": "Hour 05"},
+      "h06": {"name": "Hour 06"},
+      "h07": {"name": "Hour 07"},
+      "h08": {"name": "Hour 08"},
+      "h09": {"name": "Hour 09"},
+      "h10": {"name": "Hour 10"},
+      "h11": {"name": "Hour 11"},
+      "h12": {"name": "Hour 12"},
+      "h13": {"name": "Hour 13"},
+      "h14": {"name": "Hour 14"},
+      "h15": {"name": "Hour 15"},
+      "h16": {"name": "Hour 16"},
+      "h17": {"name": "Hour 17"},
+      "h18": {"name": "Hour 18"},
+      "h19": {"name": "Hour 19"},
+      "h20": {"name": "Hour 20"},
+      "h21": {"name": "Hour 21"},
+      "h22": {"name": "Hour 22"},
+      "h23": {"name": "Hour 23"},
+      "h24": {"name": "Hour 24"}
     }
   }
 }

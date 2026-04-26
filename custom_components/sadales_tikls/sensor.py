@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, Any
+from typing import Any, Callable
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -39,7 +39,7 @@ SENSORS: tuple[SadalesTiklsSensorDescription, ...] = (
             name=f"Sadales tikls hour {i:02d}",
             native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
             device_class=SensorDeviceClass.ENERGY,
-                value_fn=lambda data, hour=f"h{i:02d}": data.get("hours", {}).get(hour),
+            value_fn=lambda data, hour=f"h{i:02d}": data.get("hours", {}).get(hour),
         )
         for i in range(1, 25)
     ),
