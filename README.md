@@ -68,7 +68,7 @@ custom_components/sadales_tikls
 into your Home Assistant config directory:
 
 ```text
-/config/custom_components/sadales_tikls
+/homeassistant/custom_components/sadales_tikls
 ```
 
 Then restart Home Assistant and add the integration from the UI.
@@ -120,16 +120,6 @@ custom_components/sadales_tikls/*.py
 hacs.json
 README.md
 ```
-
-For HACS default repository submission, the repository should also have:
-
-- public GitHub repository
-- repository description
-- repository topics
-- issues enabled
-- at least one GitHub release
-- passing HACS and Hassfest GitHub Actions
-- Home Assistant brand assets if submitting to the default HACS repository list
 
 ## License
 
