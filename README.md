@@ -1,4 +1,8 @@
-# ha-sadales-tikls
+[![HACS Custom](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz/)
+[![hassfest](https://github.com/kristapsk/ha-sadales-tikls/actions/workflows/hassfest.yml/badge.svg)](https://github.com/kristapsk/ha-sadales-tikls/actions/workflows/hassfest.yml)
+[![HACS validation](https://github.com/kristapsk/ha-sadales-tikls/actions/workflows/hacs.yml/badge.svg)](https://github.com/kristapsk/ha-sadales-tikls/actions/workflows/hacs.yml)
+
+# Home Assistant integration for Sadales Tīkls 
 
 Home Assistant custom integration for **Sadales tikls** M2M API hourly electricity consumption data.
 
