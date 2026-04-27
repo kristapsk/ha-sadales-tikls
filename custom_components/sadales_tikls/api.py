@@ -2,10 +2,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import timedelta
+import logging
 from typing import Any
 
 import aiohttp
 from homeassistant.util import dt as dt_util
+
+_LOGGER = logging.getLogger(__name__)
+
 
 URLS = [
     "https://services.e-st.lv/m2m/services/get-object-consumption",
@@ -93,6 +97,18 @@ class SadalesTiklsApiClient:
         meter = meters[0]
         rows = meter.get("cList") or []
 
+        if not rows:
+            raise SadalesTiklsApiError(
+                f"No consumption rows returned by API from {source_url} "
+                f"for mpNr={obj.get('mpNr')} mNr={meter.get('mNr', self.m_nr)}"
+            )
+
+        # there can be 23/25 hours in a day due to daylight saving time changes
+        if len(rows) < 23:
+            raise SadalesTiklsApiError(
+                f"Incomplete consumption rows returned by API: got {len(rows)}, expected at least 23"
+            )
+
         hours: dict[str, float] = {f"h{i:02d}": 0.0 for i in range(1, 25)}
         rows_out: list[dict[str, Any]] = []
         total = 0.0
@@ -105,6 +121,8 @@ class SadalesTiklsApiClient:
                 hours[hour_key] = value
             total += value
             rows_out.append({"cDt": dt_raw, "cVR": value})
+
+        _LOGGER.debug("Sadales tikls API rows=%s total=%s", len(rows_out), round(total, 3))
 
         return {
             "mp_nr": obj.get("mpNr"),
