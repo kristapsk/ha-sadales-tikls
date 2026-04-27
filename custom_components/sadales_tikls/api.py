@@ -9,10 +9,6 @@ from homeassistant.util import dt as dt_util
 
 URLS = [
     "https://services.e-st.lv/m2m/services/get-object-consumption",
-    "https://services.e-st.lv/m2m/services/get-objectconsumption",
-    "https://services.e-st.lv/m2m/services/getobject-consumption",
-    "https://services.e-st.lv/m2m/get-object-consumption",
-    "https://services.e-st.lv/m2m/get-objectconsumption",
 ]
 
 
