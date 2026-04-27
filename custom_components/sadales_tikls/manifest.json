@@ -8,5 +8,5 @@
   "issue_tracker": "https://github.com/kristapsk/ha-sadales-tikls/issues",
   "loggers": ["custom_components.sadales_tikls"],
   "requirements": [],
-  "version": "0.1.2"
+  "version": "0.1.3"
 }
